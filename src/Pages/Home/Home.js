@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Navbar,HotelCard,Categories } from "../../components";
 import './Home.css';
+import { useCategory } from "../../context";
 
 
 
@@ -15,12 +16,13 @@ export const Home = ()=>{
     const [currentIndex, setCurrentIndex] = useState([16]);
     const[testData, setTestData] = useState([]);
     const [hotels,setHotels] = useState([]);
+    const {hotelCategory} = useCategory();
      
 
    useEffect(()=>{
         (async ()=>{
             try{
-                const {data}  = await axios.get(`https://exuberant-gold-fashion.cyclic.app/api/hotels`);
+                const {data}  = await axios.get(`https://exuberant-gold-fashion.cyclic.app/api/hotels?category=${hotelCategory}`);
                     setTestData(data)
                 setHotels(data ? data.slice(0,16):[]);
             }
@@ -28,7 +30,7 @@ export const Home = ()=>{
                 console.log(err);
             }
         })();
-    } ,[]);
+    } ,[hotelCategory]);
 
     const fetchMoreData =()=>{
         if(hotels.length>=testData.length)

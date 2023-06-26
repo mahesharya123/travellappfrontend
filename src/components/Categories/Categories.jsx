@@ -1,25 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { useCategory } from "../../context";
 
 import "./Categories.css";
 
 export const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [numberofCategoryToshow,setNumberofCategoryToshow] = useState(0);
+  const {hotelCategory,setHotelCategory} = useCategory();
  
 
   const handleRightToshow = ()=>{
-    setNumberofCategoryToshow((prev) => {
-      const nextValue = prev + 10;
-      return Math.min(nextValue, categories.length);
-    });
+    setNumberofCategoryToshow((prev) => prev+10);
+      
   }
   const handleLeftToshow = ()=>{
-    setNumberofCategoryToshow((prev) => {
-      const nextValue = prev - 10;
-      return Math.max(nextValue, 0);
-    });}
+    setNumberofCategoryToshow((prev) => prev -10);}
 
 
 
@@ -41,6 +37,12 @@ export const Categories = () => {
     })();
   }, [numberofCategoryToshow]);
 
+
+  const handleCategoryClick = (category) => {
+  
+    setHotelCategory(category);
+  };
+  console.log({"Hotel Category" : hotelCategory});
    
   return (
     <section className="categories d-flex align-center gap-larger cursor-pointer">
@@ -53,14 +55,14 @@ export const Categories = () => {
      
      
       {categories  && categories.map(({ _id, category }) => (
-        <span key={_id} >
+        <span key={_id} className={`${category === hotelCategory ? "category-color" : ""} `} onClick={()=>{handleCategoryClick(category)}} >
           {category}
         </span>
       ))}
       
      
      {
-        numberofCategoryToshow -10 < categories.length && (<button   className="button btn-filter d-flex align-center gap-small cursor-pointer" onClick={handleRightToshow}>
+        numberofCategoryToshow - 10 <= categories.length && (<button   className="button btn-filter d-flex align-center gap-small cursor-pointer" onClick={handleRightToshow}>
             <span className="material-icons-outlined">chevron_right</span>
          </button>)
      }
