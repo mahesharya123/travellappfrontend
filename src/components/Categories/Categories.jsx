@@ -42,7 +42,7 @@ export const Categories = () => {
   
     setHotelCategory(category);
   };
-  console.log({"Hotel Category" : hotelCategory});
+  
    
   return (
     <section className="categories d-flex align-center gap-larger cursor-pointer">
